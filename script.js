@@ -1,3 +1,21 @@
+
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+    apiKey: "AIzaSyCy1mJ_wexn7nWSQ9RW0_kemD8oS7MJjcw",
+    authDomain: "datos-validador-formulario.firebaseapp.com",
+    projectId: "datos-validador-formulario",
+    storageBucket: "datos-validador-formulario.firebasestorage.app",
+    messagingSenderId: "594851837361",
+    appId: "1:594851837361:web:ace9978841f4b2e072f990",
+    measurementId: "G-J4575YPJ9T"
+  };
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+//initialize db
+const db = firebase.firestore();
+
 document.getElementById("formulario").addEventListener("submit", (event) => {
     event.preventDefault(); // impide que el formulario se envíe con la acción por defecto del navegador
 
@@ -69,6 +87,21 @@ document.getElementById("formulario").addEventListener("submit", (event) => {
 
     // si todos los campos son válidos, enviar formulario
     if (!errorNombre.textContent && !emailError.textContent && !contrasenaError.textContent) {
+
+        // Initialize Cloud Firestore through Firebase
+        db.collection("users").add({
+            nombre: entradaNombre.value,
+            email: emailEntrada.value,
+            password: contrasenaEntrada.value
+        })
+        .then((docRef) => {
+            console.log("Document written with ID: ", docRef.id);
+        })
+        .catch((error) => {
+            console.error("Error adding document: ", error);
+        });
+
+
         alert("Formulario enviado correctamente");
         document.getElementById("formulario").reset(); // limpiar formulario después de enviar datos correctos
     }
